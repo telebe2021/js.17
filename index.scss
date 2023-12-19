@@ -4,8 +4,15 @@
     box-sizing: border-box;
 
 }
+.container{
+    max-width: 1400px;
+    padding: 0 32px;
+    margin: auto;
+    
+}
 a{
     text-decoration: none;
 }
 
 @import'sect2';
+@import'update';

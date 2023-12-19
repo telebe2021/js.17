@@ -23,7 +23,7 @@ fillterArr.slice(0, maxS).forEach( azad => {
      <p>${azad.text}</p>
 <span>
 <button class="delete" onclick = "deletebas(${azad.id})" ><i class="bi bi-trash"></i> Delete </button>
-<button class="update"><i class="bi bi-arrow-clockwise"></i> update </button>
+<button class="update" onclick="updateatak(${azad.id})"><i class="bi bi-arrow-clockwise"></i> update </button>
 <a href="./details.html?id=${azad.id}"><button class="details"><i class="bi bi-info-circle-fill"></i> details </button></a>
 </span>
 
@@ -62,3 +62,55 @@ return res.data;
 }
 // -----------update---------//
 
+let form = document.querySelector("form");
+let fileInp = document.querySelector("#file");
+let imageDiv = document.querySelector("#img2");
+let textInp = document.querySelector("#text");
+let nameInp = document.querySelector("#name");
+let updateDiv = document.querySelector(".updated");
+let closeBtn = document.querySelector(".bi-x");
+
+fileInp.addEventListener("change", () => {
+    let src = fileInp.files[0]
+    let reader = new FileReader();
+    reader.readAsDataURL(src);
+    reader.onload = function (e) {
+        imageDiv.src = e.target.result
+    }
+})
+
+closeBtn.addEventListener("click", () => {
+    updateDiv.style.display = "none";
+})
+
+function updateatak(id) {
+    updateDiv.style.display = "block"
+    axios.get(link + id).then(res => {
+        nameInp.value = res.data.bas,
+        textInp.value = res.data.text,
+        fileInp.value = res.data.image,
+        imageDiv.src = res.data.image
+    });
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        axios.get(link + id).then(res => {
+            nameInp.value = res.data.bas,
+            textInp.value = res.data.text,
+            imageDiv.src = res.data.image
+        });
+        let src = fileInp.files[0];
+        let reader = new FileReader();
+        reader.onload = (e) => {
+            let objetc = {
+                bas: nameInp.value,
+                image: e.target.result,
+                text: textInp.value
+            }
+            axios.patch(link + id, objetc).then(() => {
+                mars();
+                updateDiv.style.display = "none"
+            })
+        }
+        reader.readAsDataURL(src)
+    })
+};
