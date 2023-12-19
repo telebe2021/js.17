@@ -1,4 +1,4 @@
-let link = 'http://localhost:3000/card';
+let link = 'http://localhost:3000/card/';
 
 let atak = document.querySelector(".card");
 let searchInp = document.querySelector("#search");
@@ -21,6 +21,12 @@ fillterArr.slice(0, maxS).forEach( azad => {
      <a href="#">${azad.bas}</a>
      <img src="${azad.image}" alt="">
      <p>${azad.text}</p>
+<span>
+<button class="delete" onclick = "deletebas(${azad.id})" ><i class="bi bi-trash"></i> Delete </button>
+<button class="update"><i class="bi bi-arrow-clockwise"></i> update </button>
+<a href="./details.html?id=${azad.id}"><button class="details"><i class="bi bi-info-circle-fill"></i> details </button></a>
+</span>
+
     </div>
     `
     
@@ -47,5 +53,12 @@ mars();
 
 })
 
+// -------delete-----//
 
+async function deletebas(id) {
+let res = await axios.delete(link + id)
+window.location.reload()
+return res.data;
+}
 // -----------update---------//
+
